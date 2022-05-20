@@ -1,11 +1,14 @@
 package cat.oscarromero.randomuser.domain.usecase
 
+import cat.oscarromero.randomuser.domain.LocalImplementation
+import cat.oscarromero.randomuser.domain.NetworkImplementation
 import cat.oscarromero.randomuser.domain.model.User
 import cat.oscarromero.randomuser.domain.repository.UsersRepository
+import javax.inject.Inject
 
-class ObtainUsers(
-    private val usersRepositoryLocal: UsersRepository,
-    private val usersRepositoryNetwork: UsersRepository
+class ObtainUsers @Inject constructor(
+    @LocalImplementation private val usersRepositoryLocal: UsersRepository,
+    @NetworkImplementation private val usersRepositoryNetwork: UsersRepository
 ) : UseCase<Unit, List<User>>() {
 
     override suspend fun run(params: Unit): Result<List<User>, FailureType> {
