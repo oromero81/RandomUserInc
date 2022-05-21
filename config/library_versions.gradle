@@ -1,0 +1,6 @@
+ext{
+    kotlin_version = "1.6.10"
+    toolsBuildGradle_version = "7.2.0"
+
+    material_version = "1.6.0"
+}
