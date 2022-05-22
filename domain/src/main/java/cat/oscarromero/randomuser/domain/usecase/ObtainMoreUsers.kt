@@ -13,9 +13,13 @@ class ObtainMoreUsers @Inject constructor(
 
     override suspend fun run(params: Unit): Result<List<User>, FailureType> {
         val networkUsers = usersRepositoryNetwork.obtainUsers()
+        val savedDeletedUsers = usersRepositoryLocal.obtainDeletedUsers()
 
-        return if (networkUsers is Result.Success) {
-            val usersFiltered = networkUsers.successData.distinctBy { it.id }
+        return if (networkUsers is Result.Success && savedDeletedUsers is Result.Success) {
+            val users =
+                networkUsers.successData.distinctBy { it.id } + savedDeletedUsers.successData
+            val usersFiltered =
+                users.groupBy { it.id }.filter { it.value.size == 1 }.flatMap { it.value }
 
             usersRepositoryLocal.saveUsers(usersFiltered)
 

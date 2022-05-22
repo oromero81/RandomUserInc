@@ -45,6 +45,7 @@ class ObtainMoreUsersTest {
             val result = listWithDuplicates
 
             coEvery { usersRepositoryNetwork.obtainUsers() } returns Result.Success(result)
+            coEvery { usersRepositoryLocal.obtainDeletedUsers() } returns Result.Success(listOf())
 
             val receivedValue = obtainMoreUsers.run(Unit) as Result.Success
 
@@ -58,6 +59,7 @@ class ObtainMoreUsersTest {
             val result = listWithDuplicates
 
             coEvery { usersRepositoryNetwork.obtainUsers() } returns Result.Success(result)
+            coEvery { usersRepositoryLocal.obtainDeletedUsers() } returns Result.Success(listOf())
 
             val receivedValue = obtainMoreUsers.run(Unit) as Result.Success
 
