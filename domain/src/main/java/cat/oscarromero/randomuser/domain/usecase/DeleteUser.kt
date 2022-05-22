@@ -8,5 +8,5 @@ class DeleteUser @Inject constructor(@LocalImplementation private val usersRepos
     UseCase<String, Unit>() {
 
     override suspend fun run(params: String): Result<Unit, FailureType> =
-        usersRepository.deleteUser(params)
+       usersRepository.deleteUser(params)
 }
