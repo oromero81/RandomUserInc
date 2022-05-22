@@ -30,3 +30,5 @@ inline fun <reified T> parseToList(json: String): List<T> {
     val typeOfT = TypeToken.getParameterized(MutableList::class.java, T::class.java).type
     return Gson().fromJson(json, typeOfT)
 }
+
+inline fun <reified T> parseToObject(json: String): T = Gson().fromJson(json, T::class.java)
