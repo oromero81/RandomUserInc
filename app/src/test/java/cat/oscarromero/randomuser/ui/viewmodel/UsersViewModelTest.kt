@@ -204,6 +204,24 @@ class UsersViewModelTest {
     }
 
     // endregion
+    // region DELETE USER
+    @Test
+    fun `GIVEN user on users screen, WHEN user delete random user, THEN loading is NOT show`() {
+        usersViewModel.deleteUser("")
+
+        Assert.assertNull(usersViewModel.isLoading.value)
+    }
+
+    @Test
+    fun `GIVEN user on users screen, WHEN user delete random user, THEN use case is invoked`() {
+        val userID = "userID"
+
+        usersViewModel.deleteUser(userID)
+
+        verify { deleteUser.invoke(userID, any()) }
+    }
+
+    // endregion
     private fun runSuccessScenario(result: List<User> = listOf()) {
         val functionSlot = slot<(Result<List<User>, FailureType>) -> Unit>()
 
