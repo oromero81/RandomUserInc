@@ -25,17 +25,28 @@ class ObtainMoreUsersTest {
         User("2", "", "", "", "", "", Location("", "", ""), "", Date())
     )
 
+    private val users = listOf(
+        User("1", "", "", "", "", "", Location("", "", ""), "", Date()),
+        User("2", "", "", "", "", "", Location("", "", ""), "", Date()),
+        User("3", "", "", "", "", "", Location("", "", ""), "", Date())
+    )
+
+    private val usersDeleted = listOf(
+        User("2", "", "", "", "", "", Location("", "", ""), "", Date())
+    )
+
     @Before
     fun setUp() {
         obtainMoreUsers = ObtainMoreUsers(usersRepositoryLocal, usersRepositoryNetwork)
     }
 
     @Test
-    fun `GIVEN user on app, WHEN user gets more random users, THEN network repository is invoked`() {
+    fun `GIVEN user on app, WHEN user gets more random users, THEN repositories are invoked`() {
         runBlocking {
             obtainMoreUsers.run(Unit)
 
             coVerify(exactly = 1) { usersRepositoryNetwork.obtainUsers() }
+            coVerify(exactly = 1) { usersRepositoryLocal.obtainDeletedUsers() }
         }
     }
 
@@ -46,6 +57,20 @@ class ObtainMoreUsersTest {
 
             coEvery { usersRepositoryNetwork.obtainUsers() } returns Result.Success(result)
             coEvery { usersRepositoryLocal.obtainDeletedUsers() } returns Result.Success(listOf())
+
+            val receivedValue = obtainMoreUsers.run(Unit) as Result.Success
+
+            assertEquals(2, receivedValue.successData.size)
+        }
+    }
+
+    @Test
+    fun `GIVEN user getting more random users, WHEN exist deleted users, THEN returned list is filtered`() {
+        runBlocking {
+            coEvery { usersRepositoryNetwork.obtainUsers() } returns Result.Success(users)
+            coEvery { usersRepositoryLocal.obtainDeletedUsers() } returns Result.Success(
+                usersDeleted
+            )
 
             val receivedValue = obtainMoreUsers.run(Unit) as Result.Success
 
@@ -79,4 +104,5 @@ class ObtainMoreUsersTest {
             assertEquals(expectedValue, receivedValue.failureData)
         }
     }
+
 }
