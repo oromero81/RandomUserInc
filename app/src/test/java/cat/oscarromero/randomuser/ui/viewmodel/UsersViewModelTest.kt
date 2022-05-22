@@ -4,6 +4,7 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import cat.oscarromero.randomuser.domain.model.Location
 import cat.oscarromero.randomuser.domain.model.User
 import cat.oscarromero.randomuser.domain.usecase.FailureType
+import cat.oscarromero.randomuser.domain.usecase.ObtainMoreUsers
 import cat.oscarromero.randomuser.domain.usecase.ObtainUsers
 import cat.oscarromero.randomuser.domain.usecase.Result
 import cat.oscarromero.randomuser.ui.model.UserModel
@@ -24,11 +25,13 @@ class UsersViewModelTest {
     var rule: TestRule = InstantTaskExecutorRule()
 
     private val obtainUsers: ObtainUsers = mockk(relaxed = true)
+    private val obtainMoreUsers: ObtainMoreUsers = mockk(relaxed = true)
+
     private lateinit var usersViewModel: UsersViewModel
 
     @Before
     fun setUp() {
-        usersViewModel = UsersViewModel(obtainUsers)
+        usersViewModel = UsersViewModel(obtainUsers, obtainMoreUsers)
     }
 
     @Test
