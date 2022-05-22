@@ -1,6 +1,7 @@
 package cat.oscarromero.randomuser.ui.viewmodel
 
 import androidx.lifecycle.MutableLiveData
+import cat.oscarromero.randomuser.domain.usecase.DeleteUser
 import cat.oscarromero.randomuser.domain.usecase.ObtainMoreUsers
 import cat.oscarromero.randomuser.domain.usecase.ObtainUsers
 import cat.oscarromero.randomuser.domain.usecase.Result
@@ -11,7 +12,8 @@ import javax.inject.Inject
 @HiltViewModel
 class UsersViewModel @Inject constructor(
     private val obtainUsers: ObtainUsers,
-    private val obtainMoreUsers: ObtainMoreUsers
+    private val obtainMoreUsers: ObtainMoreUsers,
+    private val deleteUser: DeleteUser
 ) : BaseViewModel() {
 
     val users = MutableLiveData<List<UserModel>>()
@@ -53,5 +55,9 @@ class UsersViewModel @Inject constructor(
                 }
             }
         }
+    }
+
+    fun deleteUser(id: String) {
+        deleteUser(id) {}
     }
 }
