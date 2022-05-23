@@ -62,7 +62,10 @@ class UsersViewModelTest {
                 "Edwin Freeman",
                 "edwin.freeman@example.com",
                 "https://randomuser.me/api/portraits/men/30.jpg",
-                "(351)-071-1128"
+                "(351)-071-1128",
+                "male",
+                "Saddle Dr (Addison, Minnesota)",
+                "Jan 27, 2006"
             ),
             UserModel(
                 "150287-6138",
@@ -70,6 +73,9 @@ class UsersViewModelTest {
                 "christian.hansen@example.com",
                 "https://randomuser.me/api/portraits/men/97.jpg",
                 "98612539",
+                "male",
+                "Harevænget (Ulsted, Hals, Syddanmark)",
+                "Oct 15, 2012"
             )
         )
 
@@ -148,7 +154,10 @@ class UsersViewModelTest {
                 "Edwin Freeman",
                 "edwin.freeman@example.com",
                 "https://randomuser.me/api/portraits/men/30.jpg",
-                "(351)-071-1128"
+                "(351)-071-1128",
+                "male",
+                "Saddle Dr (Addison, Minnesota)",
+                "Jan 27, 2006"
             ),
             UserModel(
                 "150287-6138",
@@ -156,6 +165,9 @@ class UsersViewModelTest {
                 "christian.hansen@example.com",
                 "https://randomuser.me/api/portraits/men/97.jpg",
                 "98612539",
+                "male",
+                "Harevænget (Ulsted, Hals, Syddanmark)",
+                "Oct 15, 2012"
             )
         )
 
