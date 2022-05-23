@@ -1,6 +1,8 @@
 package cat.oscarromero.randomuser.data.network
 
 import cat.oscarromero.randomuser.data.api.provideOkHttpInterceptors
+import cat.oscarromero.randomuser.data.dto.GenericErrorDto
+import cat.oscarromero.randomuser.data.network.adapter.NetworkResponse
 import cat.oscarromero.randomuser.data.network.adapter.NetworkResponseAdapterFactory
 import okhttp3.Cache
 import okhttp3.Interceptor
@@ -50,3 +52,5 @@ object Network {
     fun createRetrofit(client: OkHttpClient, builder: Retrofit.Builder): Retrofit =
         builder.client(client).build()
 }
+
+typealias GenericResponse<S> = NetworkResponse<S, GenericErrorDto>
