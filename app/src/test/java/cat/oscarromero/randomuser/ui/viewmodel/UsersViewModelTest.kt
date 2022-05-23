@@ -234,6 +234,50 @@ class UsersViewModelTest {
     }
 
     // endregion
+    // region SELECT USER
+    @Test
+    fun `GIVEN user on users screen, WHEN user select random user, THEN model is set`() {
+        usersViewModel.userSelected("")
+
+        Assert.assertNotNull(usersViewModel.userSelected.value)
+    }
+
+    // endregion
+    // region USER DETAILS
+    @Test
+    fun `GIVEN user on random user details screen, WHEN screen is load, THEN model is set`() {
+        runSuccessScenario(
+            listOf(
+                User(
+                    "819-37-3624",
+                    "Edwin",
+                    "Freeman",
+                    "edwin.freeman@example.com",
+                    "https://randomuser.me/api/portraits/men/30.jpg",
+                    "(351)-071-1128",
+                    Location("Saddle Dr", "Addison", "Minnesota"),
+                    "male",
+                    SimpleDateFormat("yyyy-MM-dd").parse("2006-01-27")
+                ),
+                User(
+                    "150287-6138",
+                    "Christian",
+                    "Hansen",
+                    "christian.hansen@example.com",
+                    "https://randomuser.me/api/portraits/men/97.jpg",
+                    "98612539",
+                    Location("Harevænget", "Ulsted, Hals", "Syddanmark"),
+                    "male",
+                    SimpleDateFormat("yyyy-MM-dd").parse("2012-10-15")
+                )
+            )
+        )
+        usersViewModel.loadUser("819-37-3624")
+
+        Assert.assertNotNull(usersViewModel.user.value)
+    }
+
+    // endregion
     private fun runSuccessScenario(result: List<User> = listOf()) {
         val functionSlot = slot<(Result<List<User>, FailureType>) -> Unit>()
 
