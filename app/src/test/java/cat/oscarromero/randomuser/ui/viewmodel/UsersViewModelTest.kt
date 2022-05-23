@@ -3,10 +3,7 @@ package cat.oscarromero.randomuser.ui.viewmodel
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import cat.oscarromero.randomuser.domain.model.Location
 import cat.oscarromero.randomuser.domain.model.User
-import cat.oscarromero.randomuser.domain.usecase.FailureType
-import cat.oscarromero.randomuser.domain.usecase.ObtainMoreUsers
-import cat.oscarromero.randomuser.domain.usecase.ObtainUsers
-import cat.oscarromero.randomuser.domain.usecase.Result
+import cat.oscarromero.randomuser.domain.usecase.*
 import cat.oscarromero.randomuser.ui.model.UserModel
 import io.mockk.mockk
 import io.mockk.slot
@@ -26,12 +23,13 @@ class UsersViewModelTest {
 
     private val obtainUsers: ObtainUsers = mockk(relaxed = true)
     private val obtainMoreUsers: ObtainMoreUsers = mockk(relaxed = true)
+    private val deleteUser: DeleteUser = mockk(relaxed = true)
 
     private lateinit var usersViewModel: UsersViewModel
 
     @Before
     fun setUp() {
-        usersViewModel = UsersViewModel(obtainUsers, obtainMoreUsers)
+        usersViewModel = UsersViewModel(obtainUsers, obtainMoreUsers, deleteUser)
     }
 
     // region OBTAIN USERS
@@ -203,6 +201,24 @@ class UsersViewModelTest {
         runMoreUsersFailureScenario()
 
         Assert.assertNull(usersViewModel.failure.value)
+    }
+
+    // endregion
+    // region DELETE USER
+    @Test
+    fun `GIVEN user on users screen, WHEN user delete random user, THEN loading is NOT show`() {
+        usersViewModel.deleteUser("")
+
+        Assert.assertNull(usersViewModel.isLoading.value)
+    }
+
+    @Test
+    fun `GIVEN user on users screen, WHEN user delete random user, THEN use case is invoked`() {
+        val userID = "userID"
+
+        usersViewModel.deleteUser(userID)
+
+        verify { deleteUser.invoke(userID, any()) }
     }
 
     // endregion

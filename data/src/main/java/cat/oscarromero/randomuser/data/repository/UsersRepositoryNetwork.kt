@@ -56,6 +56,12 @@ class UsersRepositoryNetwork @Inject constructor(private val retrofit: Retrofit)
     override suspend fun saveUsers(users: List<User>): Result<Unit, FailureType> =
         Result.Failure(FailureType.UnknownFailure("Function not implemented, you should use Network implementation version"))
 
+    override suspend fun deleteUser(userId: String): Result<Unit, FailureType> =
+        Result.Failure(FailureType.UnknownFailure("Function not implemented, you should use Network implementation version"))
+
+    override suspend fun obtainDeletedUsers(): Result<List<User>, FailureType> =
+        Result.Failure(FailureType.UnknownFailure("Function not implemented, you should use Network implementation version"))
+
     companion object {
         private const val USERS_REQUESTED = 40
         private const val REGISTER_DATE_FORMAT = "yyyy-MM-dd"
