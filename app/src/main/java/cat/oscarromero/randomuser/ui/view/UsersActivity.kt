@@ -22,5 +22,12 @@ class UsersActivity : AppCompatActivity() {
 
         usersViewModel.loadUsers()
         supportFragmentManager.commit { add(R.id.container, UsersFragment.newInstance(), null) }
+
+        usersViewModel.userSelected.observe(this) {
+            supportFragmentManager.commit {
+                replace(R.id.container, UserDetailsFragment.newInstance(it), null)
+                    .addToBackStack(UserDetailsFragment::class.simpleName)
+            }
+        }
     }
 }
