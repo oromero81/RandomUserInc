@@ -13,22 +13,26 @@ import javax.inject.Inject
 class UsersRepositoryLocal @Inject constructor(private val sharedPreferences: SharedPreferences) :
     UsersRepository {
 
-    override suspend fun obtainUsers(): Result<List<User>, FailureType> {
+    override suspend fun obtainUsers(): Result<List<User>, FailureType> =
+        Result.Success(getUsersSaved())
+
+    override suspend fun saveUsers(users: List<User>): Result<Unit, FailureType> {
+        val usersSaved = getUsersSaved()
+        val usersToSave = usersSaved + users
+
+        sharedPreferences.edit { putString(KEY_USERS_SAVED, toJson(usersToSave)) }
+
+        return Result.Success(Unit)
+    }
+
+    private fun getUsersSaved(): List<User> {
         val usersSaved = sharedPreferences.getString(KEY_USERS_SAVED, "") ?: ""
 
-        val users = if (usersSaved.isEmpty()) {
-            listOf<User>()
+        return if (usersSaved.isEmpty()) {
+            listOf()
         } else {
             parseToList(usersSaved)
         }
-
-        return Result.Success(users)
-    }
-
-    override suspend fun saveUsers(users: List<User>): Result<Unit, FailureType> {
-        sharedPreferences.edit { putString(KEY_USERS_SAVED, toJson(users)) }
-
-        return Result.Success(Unit)
     }
 
     companion object {
