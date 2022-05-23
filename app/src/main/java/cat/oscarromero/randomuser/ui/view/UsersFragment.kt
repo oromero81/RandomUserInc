@@ -53,11 +53,7 @@ class UsersFragment : Fragment(R.layout.fragment_users) {
 
         usersViewModel.apply {
             users.observe(viewLifecycleOwner) {
-                usersAdapter.apply {
-                    items.clear()
-                    items.addAll(it)
-                    notifyDataSetChanged()
-                }
+                usersAdapter.addData(it)
             }
 
             isLoading.observe(viewLifecycleOwner) { show ->
