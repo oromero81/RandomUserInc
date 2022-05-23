@@ -6,4 +6,11 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_marginTop">@dimen/margin_padding_XS</item>
     </style>
+
+    <style name="user_details_text">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">@dimen/margin_padding_S</item>
+        <item name="android:textSize">18sp</item>
+    </style>
 </resources>
