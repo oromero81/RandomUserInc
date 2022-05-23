@@ -17,6 +17,9 @@ class UsersViewModel @Inject constructor(
 ) : BaseViewModel() {
 
     val users = MutableLiveData<List<UserModel>>()
+    val userSelected = MutableLiveData<String>()
+    val user = MutableLiveData<UserModel>()
+
     var isMoreUsersRequest = false
 
     fun loadUsers() {
@@ -59,5 +62,13 @@ class UsersViewModel @Inject constructor(
 
     fun deleteUser(id: String) {
         deleteUser(id) {}
+    }
+
+    fun userSelected(id: String) {
+        userSelected.value = id
+    }
+
+    fun loadUser(id: String) {
+        user.value = users.value?.find { it.id == id }
     }
 }

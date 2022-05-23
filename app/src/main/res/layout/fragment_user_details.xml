@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.view.UserDetailsFragment">
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/pictureImageView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:adjustViewBounds="true"
+        android:scaleType="centerCrop"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:src="@drawable/ic_user_flat" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingStart="@dimen/margin_padding_M"
+        android:paddingTop="@dimen/margin_padding_S"
+        android:paddingEnd="@dimen/margin_padding_M"
+        app:layout_constraintTop_toBottomOf="@id/pictureImageView">
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/nameTextView"
+            style="@style/user_details_text"
+            android:layout_width="wrap_content"
+            android:textSize="24sp"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Michael Green" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/emailTextView"
+            style="@style/user_details_text"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/nameTextView"
+            tools:text="michael.green@example.com" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/phoneTextView"
+            style="@style/user_details_text"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/emailTextView"
+            tools:text="(555) 989 7687" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/locationTextView"
+            style="@style/user_details_text"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/phoneTextView"
+            tools:text="Beach St (Los Angeles, California)" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/genderTextView"
+            style="@style/user_details_text"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/locationTextView"
+            tools:text="Male" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/registerDateTextView"
+            style="@style/user_details_text"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/genderTextView"
+            tools:text="23-AUG-2004" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

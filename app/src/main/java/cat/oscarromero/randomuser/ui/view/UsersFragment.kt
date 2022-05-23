@@ -18,7 +18,9 @@ class UsersFragment : Fragment(R.layout.fragment_users) {
     private var fragmentUsersBinding: FragmentUsersBinding? = null
 
     private val usersAdapter: UsersRecyclerViewAdapter by lazy {
-        UsersRecyclerViewAdapter { usersViewModel.deleteUser(it) }
+        UsersRecyclerViewAdapter(
+            userDelete = { usersViewModel.deleteUser(it) },
+            userSelected = { usersViewModel.userSelected(it) })
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
