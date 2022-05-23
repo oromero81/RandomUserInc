@@ -50,7 +50,11 @@ class UsersViewModel @Inject constructor(
                 when (it) {
                     is Result.Success -> {
                         hideLoading()
-                        users.value = it.successData.map { user -> UserModel.fromUser(user) }
+
+                        val moreUsers = users.value?.toMutableList() ?: mutableListOf()
+                        moreUsers.addAll(it.successData.map { user -> UserModel.fromUser(user) })
+
+                        users.value = moreUsers
                     }
                     is Result.Failure -> {
                         hideLoading()
