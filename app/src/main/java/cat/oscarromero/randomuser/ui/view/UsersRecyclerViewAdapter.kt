@@ -3,31 +3,29 @@ package cat.oscarromero.randomuser.ui.view
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageButton
-import android.widget.ImageView
-import android.widget.TextView
+import android.widget.*
 import androidx.recyclerview.widget.RecyclerView
 import cat.oscarromero.randomuser.R
 import cat.oscarromero.randomuser.databinding.UserCellBinding
 import cat.oscarromero.randomuser.extension.loadImageFromUrl
 import cat.oscarromero.randomuser.ui.model.UserModel
-import kotlin.properties.Delegates
 
 class UsersRecyclerViewAdapter(
     private val userDelete: (String) -> Unit,
     private val userSelected: (String) -> Unit
 ) :
-    RecyclerView.Adapter<UsersRecyclerViewAdapter.UserViewHolder>() {
+    RecyclerView.Adapter<UsersRecyclerViewAdapter.UserViewHolder>(), Filterable {
 
-    val items: MutableList<UserModel> by Delegates.observable(mutableListOf()) { _, _, _ -> }
+    private val items: MutableList<UserModel> = mutableListOf()
+    private val itemsFiltered: MutableList<UserModel> = mutableListOf()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UserViewHolder =
         UserViewHolder(
             UserCellBinding.inflate(LayoutInflater.from(parent.context), parent, false),
             { id ->
-                val userToDelete = items.find { it.id == id }
-                val index = items.indexOf(userToDelete)
-                items.removeAt(index)
+                val userToDelete = itemsFiltered.find { it.id == id }
+                val index = itemsFiltered.indexOf(userToDelete)
+                itemsFiltered.removeAt(index)
                 notifyItemRemoved(index)
 
                 userDelete(id)
@@ -36,10 +34,48 @@ class UsersRecyclerViewAdapter(
         )
 
     override fun onBindViewHolder(holder: UserViewHolder, position: Int) {
-        holder.render(items[position])
+        holder.render(itemsFiltered[position])
     }
 
-    override fun getItemCount(): Int = items.size
+    override fun getItemCount(): Int = itemsFiltered.size
+
+    override fun getFilter(): Filter {
+        return object : Filter() {
+            override fun performFiltering(constraint: CharSequence?): FilterResults {
+                val charString = constraint?.toString() ?: ""
+                val listFiltered: MutableList<UserModel> = mutableListOf()
+
+                if (charString.isEmpty()) {
+                    listFiltered.addAll(items)
+                } else {
+                    items
+                        .filter {
+                            (it.name.contains(constraint!!)) or (it.email.contains(constraint))
+
+                        }
+                        .forEach { listFiltered.add(it) }
+
+                }
+                return FilterResults().apply { values = listFiltered }
+            }
+
+            override fun publishResults(constraint: CharSequence?, results: FilterResults?) {
+                itemsFiltered.clear()
+                itemsFiltered.addAll(results?.values as Collection<UserModel>)
+                notifyDataSetChanged()
+            }
+        }
+    }
+
+    fun addData(data: List<UserModel>) {
+        items.clear()
+        items.addAll(data)
+
+        itemsFiltered.clear()
+        itemsFiltered.addAll(data)
+
+        notifyDataSetChanged()
+    }
 
     inner class UserViewHolder(
         binding: UserCellBinding,

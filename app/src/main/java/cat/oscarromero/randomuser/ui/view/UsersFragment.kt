@@ -3,6 +3,7 @@ package cat.oscarromero.randomuser.ui.view
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
+import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -23,6 +24,8 @@ class UsersFragment : Fragment(R.layout.fragment_users) {
             userSelected = { usersViewModel.userSelected(it) })
     }
 
+    private var userScroll = false
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -30,6 +33,18 @@ class UsersFragment : Fragment(R.layout.fragment_users) {
         fragmentUsersBinding = binding
 
         binding.apply {
+            usersSearchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+                override fun onQueryTextSubmit(query: String?): Boolean {
+                    usersAdapter.filter.filter(query)
+                    return false
+                }
+
+                override fun onQueryTextChange(newText: String?): Boolean {
+                    usersAdapter.filter.filter(newText)
+                    return false
+                }
+            })
+
             userRecyclerView.layoutManager as LinearLayoutManager
             userRecyclerView.adapter = usersAdapter
 
@@ -39,12 +54,23 @@ class UsersFragment : Fragment(R.layout.fragment_users) {
                         override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                             super.onScrolled(recyclerView, dx, dy)
 
-                            val totalItemCount = it.itemCount;
-                            val lastVisibleItem = it.findLastVisibleItemPosition();
+                            if (userScroll) {
+                                val totalItemCount = it.itemCount;
+                                val lastVisibleItem = it.findLastVisibleItemPosition();
 
-                            if (totalItemCount <= (lastVisibleItem + VISIBLE_THRESHOLD)) {
-                                usersViewModel.loadMoreUsers()
+                                if (totalItemCount <= (lastVisibleItem + VISIBLE_THRESHOLD)) {
+                                    usersViewModel.loadMoreUsers()
+                                }
+                                userScroll = false
                             }
+                        }
+
+                        override fun onScrollStateChanged(
+                            recyclerView: RecyclerView,
+                            newState: Int
+                        ) {
+                            super.onScrollStateChanged(recyclerView, newState)
+                            userScroll = true
                         }
                     })
                 }
@@ -53,11 +79,7 @@ class UsersFragment : Fragment(R.layout.fragment_users) {
 
         usersViewModel.apply {
             users.observe(viewLifecycleOwner) {
-                usersAdapter.apply {
-                    items.clear()
-                    items.addAll(it)
-                    notifyDataSetChanged()
-                }
+                usersAdapter.addData(it)
             }
 
             isLoading.observe(viewLifecycleOwner) { show ->
